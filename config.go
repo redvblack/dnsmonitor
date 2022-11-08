@@ -14,6 +14,10 @@ type Config struct {
 	// Gotify - <gotify-server>/#/applications
 	GofifyServer string `json:"gotify_server"`
 	GofifyToken  string `json:"gotify_token"`
+
+	// Pushover - 
+	PushoverToken  string `json:"pushover_token"`
+	PushoverUser  string `json:"pushover_user"`
 }
 
 // HomeDir returns the user's home directory

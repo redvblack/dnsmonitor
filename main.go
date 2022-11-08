@@ -173,38 +173,34 @@ func Lookup(lookupType, ip string) []string {
 
 	result := []string{}
 
-	if lookupType == "A" {
 		ipaddr, err := r.LookupIPAddr(ctx, ip)
 		if err == nil {
 			for _, v := range ipaddr {
 				result = append(result, fmt.Sprintf("%s", v.IP))
 			}
 		}
-	} else if lookupType == "CNAME" {
+
 		cname, err := r.LookupCNAME(ctx, ip)
 		if err == nil {
 			result = append(result, cname)
 		}
-	} else if lookupType == "MX" {
-		ipaddr, err := r.LookupMX(ctx, ip)
+
+		ipaddr4, err := r.LookupMX(ctx, ip)
 		if err == nil {
-			for _, v := range ipaddr {
+			for _, v := range ipaddr4 {
 				result = append(result, fmt.Sprintf("%s", v.Host))
 			}
 		}
-	} else if lookupType == "TXT" {
-		ipaddr, err := r.LookupTXT(ctx, ip)
+		ipaddr2, err := r.LookupTXT(ctx, ip)
 		if err == nil {
-			result = ipaddr
+			result = ipaddr2
 		}
-	} else if lookupType == "NS" {
-		ipaddr, err := r.LookupNS(ctx, ip)
+		ipaddr3, err := r.LookupNS(ctx, ip)
 		if err == nil {
-			for _, v := range ipaddr {
+			for _, v := range ipaddr3 {
 				result = append(result, fmt.Sprintf("%s", v.Host))
 			}
 		}
-	}
 
 	// make sure they are in alphabetical order for Equal() comparison
 	sort.Strings(result)

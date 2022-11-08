@@ -8,14 +8,32 @@ import (
 	"path"
 
 	"github.com/xconstruct/go-pushbullet"
+        "github.com/gregdel/pushover"
+
 )
 
 // SendNotifications will send a notification to all registered apps
 func SendNotifications(title, message, priority string) {
 	go NotifyPushbullet(title, message, priority)
 	go NotifyGotify(title, message, priority)
+	go NotifyPushover(title, message, priority)
 }
 
+// NotifyPushover  messages pushover
+func NotifyPushover(title, message, priority string) {
+	if config.PushoverToken != "" && config.PushoverUser != "" {
+    		app := pushover.New(config.PushoverToken)
+    		recipient := pushover.NewRecipient(config.PushoverUser)
+    		m := pushover.NewMessage(message)
+    		response, err := app.SendMessage(m, recipient)
+    		if err != nil {
+        		fmt.Println("Pushover:", err)
+			return
+    		}
+
+    		fmt.Println("Pushover :", response)
+	}
+}
 // NotifyGotify messages gotify
 func NotifyGotify(title, message, priority string) {
 	if config.GofifyServer != "" && config.GofifyToken != "" {
